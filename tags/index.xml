@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Three Worlds</title>
+    <title>Tags on gexago</title>
     <link>http://example.org/tags/</link>
-    <description>Recent content in Tags on Three Worlds</description>
+    <description>Recent content in Tags on gexago</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
+    <lastBuildDate>Mon, 11 Aug 2025 18:36:12 +0800</lastBuildDate>
     <atom:link href="http://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude</title>
+      <link>http://example.org/tags/claude/</link>
+      <pubDate>Mon, 11 Aug 2025 18:36:12 +0800</pubDate>
+      <guid>http://example.org/tags/claude/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

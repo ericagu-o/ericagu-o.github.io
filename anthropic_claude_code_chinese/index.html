@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Anthropic团队如何使用Claude Code - gexago</title><meta name="Description" content="This is my cool site"><meta property="og:url" content="http://example.org/anthropic_claude_code_chinese/">
+  <meta property="og:site_name" content="gexago">
+  <meta property="og:title" content="Anthropic团队如何使用Claude Code">
+  <meta property="og:description" content="Anthropic内部团队正在通过Claude Code变革他们的工作流程，使开发人员和非技术人员都能处理复杂项目、自动化任务，并弥补以前限制他们生产力的技能差距。
+为了了解更多信息，我们采访了以下团队：
+数据基础设施 产品开发 安全工程 推理 数据科学和可视化 产品工程 增长营销 产品设计 强化学习（RL）工程 法务 通过这些访谈，我们收集了不同部门如何使用Claude Code、它对工作的影响以及给考虑采用该工具的其他组织的建议。
+数据基础设施团队的Claude Code使用 数据基础设施团队为公司各团队组织所有业务数据。他们使用Claude Code来自动化常规数据工程任务、排除复杂基础设施问题的故障，以及创建有文档记录的工作流程，供技术和非技术团队成员独立访问和操作数据。
+主要Claude Code使用案例 通过截图进行Kubernetes调试 当Kubernetes集群宕机且无法调度新pod时，团队使用Claude Code诊断问题。他们将控制面板截图输入Claude Code，Claude Code引导他们逐一浏览Google Cloud的UI菜单，直到发现表明pod IP地址耗尽的警告。然后Claude Code提供了创建新IP池并将其添加到集群的确切命令，无需涉及网络专家。
+为财务团队提供纯文本工作流程 工程师向财务团队成员展示如何编写描述其数据工作流程的纯文本文件，然后将其加载到Claude Code中以获得完全自动化的执行。没有编码经验的员工可以描述&#34;查询此控制面板、获取信息、运行这些查询、生成Excel输出&#34;等步骤，Claude Code将执行整个工作流程，包括询问所需的输入（如日期）。
+为新员工提供代码库导航 当新数据科学家加入团队时，他们被引导使用Claude Code来导航庞大的代码库。Claude Code读取他们的Claude.md文件（文档），识别特定任务的相关文件，解释数据管道依赖关系，并帮助新人理解哪些上游源向控制面板提供数据。这替代了传统的数据目录和可发现性工具。
+会话结束时的文档更新 团队要求Claude Code在每个任务结束时总结已完成的工作会话并建议改进。这创建了一个持续改进循环，Claude Code基于实际使用情况帮助完善Claude.md文档和工作流程说明，使后续迭代更有效。
+跨多个实例的并行任务管理 在处理长时间运行的数据任务时，团队在不同存储库中为不同项目打开多个Claude Code实例。每个实例都保持完整上下文，所以当他们几小时或几天后切换回来时，Claude Code准确记住他们在做什么以及进度，实现了真正的并行工作流程管理而不会丢失上下文。
+团队影响 在没有专业知识的情况下解决基础设施问题 解决通常需要拉入系统或网络团队成员的Kubernetes集群问题，使用Claude Code诊断问题并提供确切修复方案。
+加速入职流程 新的数据分析师和团队成员可以快速理解复杂系统并做出有意义的贡献，而无需大量指导。
+增强支持工作流程 Claude Code可以处理更大的数据量并识别异常（如监控200个控制面板），这对人类来说是不可能手动审查的。
+实现跨团队自助服务 没有编码经验的财务团队现在可以独立执行复杂的数据工作流程。
+数据基础设施团队的最佳建议 编写详细的Claude.md文件 根据团队经验，在Claude.md文件中记录工作流程、工具和期望越详细，Claude Code的表现越好。这使Claude Code在有现有设计模式时能够出色地处理设置新数据管道等常规任务。">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-11T18:36:12+08:00">
+    <meta property="article:modified_time" content="2025-08-11T18:36:12+08:00">
+    <meta property="article:tag" content="Claude">
+    <meta property="og:image" content="http://example.org/logo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://example.org/logo.png">
+  <meta name="twitter:title" content="Anthropic团队如何使用Claude Code">
+  <meta name="twitter:description" content="Anthropic内部团队正在通过Claude Code变革他们的工作流程，使开发人员和非技术人员都能处理复杂项目、自动化任务，并弥补以前限制他们生产力的技能差距。
+为了了解更多信息，我们采访了以下团队：
+数据基础设施 产品开发 安全工程 推理 数据科学和可视化 产品工程 增长营销 产品设计 强化学习（RL）工程 法务 通过这些访谈，我们收集了不同部门如何使用Claude Code、它对工作的影响以及给考虑采用该工具的其他组织的建议。
+数据基础设施团队的Claude Code使用 数据基础设施团队为公司各团队组织所有业务数据。他们使用Claude Code来自动化常规数据工程任务、排除复杂基础设施问题的故障，以及创建有文档记录的工作流程，供技术和非技术团队成员独立访问和操作数据。
+主要Claude Code使用案例 通过截图进行Kubernetes调试 当Kubernetes集群宕机且无法调度新pod时，团队使用Claude Code诊断问题。他们将控制面板截图输入Claude Code，Claude Code引导他们逐一浏览Google Cloud的UI菜单，直到发现表明pod IP地址耗尽的警告。然后Claude Code提供了创建新IP池并将其添加到集群的确切命令，无需涉及网络专家。
+为财务团队提供纯文本工作流程 工程师向财务团队成员展示如何编写描述其数据工作流程的纯文本文件，然后将其加载到Claude Code中以获得完全自动化的执行。没有编码经验的员工可以描述&#34;查询此控制面板、获取信息、运行这些查询、生成Excel输出&#34;等步骤，Claude Code将执行整个工作流程，包括询问所需的输入（如日期）。
+为新员工提供代码库导航 当新数据科学家加入团队时，他们被引导使用Claude Code来导航庞大的代码库。Claude Code读取他们的Claude.md文件（文档），识别特定任务的相关文件，解释数据管道依赖关系，并帮助新人理解哪些上游源向控制面板提供数据。这替代了传统的数据目录和可发现性工具。
+会话结束时的文档更新 团队要求Claude Code在每个任务结束时总结已完成的工作会话并建议改进。这创建了一个持续改进循环，Claude Code基于实际使用情况帮助完善Claude.md文档和工作流程说明，使后续迭代更有效。
+跨多个实例的并行任务管理 在处理长时间运行的数据任务时，团队在不同存储库中为不同项目打开多个Claude Code实例。每个实例都保持完整上下文，所以当他们几小时或几天后切换回来时，Claude Code准确记住他们在做什么以及进度，实现了真正的并行工作流程管理而不会丢失上下文。
+团队影响 在没有专业知识的情况下解决基础设施问题 解决通常需要拉入系统或网络团队成员的Kubernetes集群问题，使用Claude Code诊断问题并提供确切修复方案。
+加速入职流程 新的数据分析师和团队成员可以快速理解复杂系统并做出有意义的贡献，而无需大量指导。
+增强支持工作流程 Claude Code可以处理更大的数据量并识别异常（如监控200个控制面板），这对人类来说是不可能手动审查的。
+实现跨团队自助服务 没有编码经验的财务团队现在可以独立执行复杂的数据工作流程。
+数据基础设施团队的最佳建议 编写详细的Claude.md文件 根据团队经验，在Claude.md文件中记录工作流程、工具和期望越详细，Claude Code的表现越好。这使Claude Code在有现有设计模式时能够出色地处理设置新数据管道等常规任务。">
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/anthropic_claude_code_chinese/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Anthropic团队如何使用Claude Code",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/anthropic_claude_code_chinese\/"
+        },"genre": "posts","keywords": "Claude","wordcount":  312 ,
+        "url": "http:\/\/example.org\/anthropic_claude_code_chinese\/","datePublished": "2025-08-11T18:36:12+08:00","dateModified": "2025-08-11T18:36:12+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "gexago"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="gexago">Gexage</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="gexago">Gexage</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Anthropic团队如何使用Claude Code</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>gexago</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-08-11">2025-08-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;312 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据基础设施团队的claude-code使用">数据基础设施团队的Claude Code使用</a>
+      <ul>
+        <li><a href="#主要claude-code使用案例">主要Claude Code使用案例</a></li>
+        <li><a href="#团队影响">团队影响</a></li>
+        <li><a href="#数据基础设施团队的最佳建议">数据基础设施团队的最佳建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#产品开发团队的claude-code使用">产品开发团队的Claude Code使用</a>
+      <ul>
+        <li><a href="#主要claude-code使用案例-1">主要Claude Code使用案例</a></li>
+        <li><a href="#团队影响-1">团队影响</a></li>
+        <li><a href="#claude-code团队的最佳建议">Claude Code团队的最佳建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#安全工程团队的claude-code使用">安全工程团队的Claude Code使用</a>
+      <ul>
+        <li><a href="#主要claude-code使用案例-2">主要Claude Code使用案例</a></li>
+        <li><a href="#团队影响-2">团队影响</a></li>
+        <li><a href="#安全工程团队的最佳建议">安全工程团队的最佳建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#推理团队的claude-code使用">推理团队的Claude Code使用</a>
+      <ul>
+        <li><a href="#主要claude-code使用案例-3">主要Claude Code使用案例</a></li>
+        <li><a href="#团队影响-3">团队影响</a></li>
+        <li><a href="#推理团队的最佳建议">推理团队的最佳建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#数据科学和ml工程团队的claude-code使用">数据科学和ML工程团队的Claude Code使用</a>
+      <ul>
+        <li><a href="#主要claude-code使用案例-4">主要Claude Code使用案例</a></li>
+        <li><a href="#团队影响-4">团队影响</a></li>
+        <li><a href="#数据科学和ml工程团队的最佳建议">数据科学和ML工程团队的最佳建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#产品工程团队的claude-code使用">产品工程团队的Claude Code使用</a>
+      <ul>
+        <li><a href="#主要claude-code使用案例-5">主要Claude Code使用案例</a></li>
+        <li><a href="#团队影响-5">团队影响</a></li>
+        <li><a href="#产品工程团队的最佳建议">产品工程团队的最佳建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#增长营销团队的claude-code使用">增长营销团队的Claude Code使用</a>
+      <ul>
+        <li><a href="#主要claude-code使用案例-6">主要Claude Code使用案例</a></li>
+        <li><a href="#团队影响-6">团队影响</a></li>
+        <li><a href="#增长营销团队的最佳建议">增长营销团队的最佳建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#产品设计团队的claude-code使用">产品设计团队的Claude Code使用</a>
+      <ul>
+        <li><a href="#主要claude-code使用案例-7">主要Claude Code使用案例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/anthropic_claude_code_chinese/image.png"
+        data-srcset="/anthropic_claude_code_chinese/image.png, /anthropic_claude_code_chinese/image.png 1.5x, /anthropic_claude_code_chinese/image.png 2x"
+        data-sizes="auto"
+        alt="/anthropic_claude_code_chinese/image.png"
+        title="/anthropic_claude_code_chinese/image.png" width="870" height="475" /></p>
+<p>Anthropic内部团队正在通过<a href="https://www.anthropic.com/claude-code" target="_blank" rel="noopener noreffer ">Claude Code</a>变革他们的工作流程，使开发人员和非技术人员都能处理复杂项目、自动化任务，并弥补以前限制他们生产力的技能差距。</p>
+<p>为了了解更多信息，我们采访了以下团队：</p>
+<ul>
+<li>数据基础设施</li>
+<li>产品开发</li>
+<li>安全工程</li>
+<li>推理</li>
+<li>数据科学和可视化</li>
+<li>产品工程</li>
+<li>增长营销</li>
+<li>产品设计</li>
+<li>强化学习（RL）工程</li>
+<li>法务</li>
+</ul>
+<p>通过这些访谈，我们收集了不同部门如何使用Claude Code、它对工作的影响以及给考虑采用该工具的其他组织的建议。</p>
+<h2 id="数据基础设施团队的claude-code使用">数据基础设施团队的Claude Code使用</h2>
+<p>数据基础设施团队为公司各团队组织所有业务数据。他们使用Claude Code来自动化常规数据工程任务、排除复杂基础设施问题的故障，以及创建有文档记录的工作流程，供技术和非技术团队成员独立访问和操作数据。</p>
+<h3 id="主要claude-code使用案例">主要Claude Code使用案例</h3>
+<p><strong>通过截图进行Kubernetes调试</strong>
+当Kubernetes集群宕机且无法调度新pod时，团队使用Claude Code诊断问题。他们将控制面板截图输入Claude Code，Claude Code引导他们逐一浏览Google Cloud的UI菜单，直到发现表明pod IP地址耗尽的警告。然后Claude Code提供了创建新IP池并将其添加到集群的确切命令，无需涉及网络专家。</p>
+<p><strong>为财务团队提供纯文本工作流程</strong>
+工程师向财务团队成员展示如何编写描述其数据工作流程的纯文本文件，然后将其加载到Claude Code中以获得完全自动化的执行。没有编码经验的员工可以描述&quot;查询此控制面板、获取信息、运行这些查询、生成Excel输出&quot;等步骤，Claude Code将执行整个工作流程，包括询问所需的输入（如日期）。</p>
+<p><strong>为新员工提供代码库导航</strong>
+当新数据科学家加入团队时，他们被引导使用Claude Code来导航庞大的代码库。Claude Code读取他们的Claude.md文件（文档），识别特定任务的相关文件，解释数据管道依赖关系，并帮助新人理解哪些上游源向控制面板提供数据。这替代了传统的数据目录和可发现性工具。</p>
+<p><strong>会话结束时的文档更新</strong>
+团队要求Claude Code在每个任务结束时总结已完成的工作会话并建议改进。这创建了一个持续改进循环，Claude Code基于实际使用情况帮助完善Claude.md文档和工作流程说明，使后续迭代更有效。</p>
+<p><strong>跨多个实例的并行任务管理</strong>
+在处理长时间运行的数据任务时，团队在不同存储库中为不同项目打开多个Claude Code实例。每个实例都保持完整上下文，所以当他们几小时或几天后切换回来时，Claude Code准确记住他们在做什么以及进度，实现了真正的并行工作流程管理而不会丢失上下文。</p>
+<h3 id="团队影响">团队影响</h3>
+<p><strong>在没有专业知识的情况下解决基础设施问题</strong>
+解决通常需要拉入系统或网络团队成员的Kubernetes集群问题，使用Claude Code诊断问题并提供确切修复方案。</p>
+<p><strong>加速入职流程</strong>
+新的数据分析师和团队成员可以快速理解复杂系统并做出有意义的贡献，而无需大量指导。</p>
+<p><strong>增强支持工作流程</strong>
+Claude Code可以处理更大的数据量并识别异常（如监控200个控制面板），这对人类来说是不可能手动审查的。</p>
+<p><strong>实现跨团队自助服务</strong>
+没有编码经验的财务团队现在可以独立执行复杂的数据工作流程。</p>
+<h3 id="数据基础设施团队的最佳建议">数据基础设施团队的最佳建议</h3>
+<p><strong>编写详细的Claude.md文件</strong>
+根据团队经验，在Claude.md文件中记录工作流程、工具和期望越详细，Claude Code的表现越好。这使Claude Code在有现有设计模式时能够出色地处理设置新数据管道等常规任务。</p>
+<p><strong>为敏感数据使用MCP服务器而非CLI</strong>
+他们建议使用MCP服务器而不是BigQuery CLI来更好地控制Claude Code可以访问的内容安全性，特别是在处理需要日志记录或有潜在隐私问题的敏感数据时。</p>
+<p><strong>分享团队使用会话</strong>
+团队举行了成员向彼此演示Claude Code工作流程的会话。这有助于传播最佳实践并展示他们可能自己没有发现的使用工具的不同方式。</p>
+<h2 id="产品开发团队的claude-code使用">产品开发团队的Claude Code使用</h2>
+<p>Claude Code产品开发团队使用他们自己的产品来构建Claude Code的更新，扩展产品的企业能力和代理循环功能。</p>
+<h3 id="主要claude-code使用案例-1">主要Claude Code使用案例</h3>
+<p><strong>通过自动接受模式进行快速原型制作</strong>
+工程师通过启用&quot;自动接受模式&quot;（shift+tab）并设置自主循环来使用Claude Code进行快速原型制作，在该循环中Claude编写代码、运行测试并持续迭代。他们给Claude一些他们不熟悉的抽象问题，让它自主工作，然后在接手最终完善之前审查80%完成的解决方案。团队建议从干净的git状态开始并定期提交检查点，这样如果Claude偏离轨道，他们可以轻松撤销任何错误更改。</p>
+<p><strong>为核心功能进行同步编码</strong>
+对于涉及应用程序业务逻辑的更关键功能，团队与Claude Code同步工作，提供具有特定实现说明的详细提示。他们实时监控过程以确保代码质量、风格指南合规性和适当的架构，同时让Claude处理重复的编码工作。</p>
+<p><strong>构建Vim模式</strong>
+他们最成功的异步项目之一是为Claude Code实现Vim键绑定。他们要求Claude构建整个功能，大约70%的最终实现来自Claude的自主工作，只需要几次迭代即可完成。</p>
+<p><strong>测试生成和错误修复</strong>
+团队使用Claude Code在实现功能后编写综合测试，并处理在拉取请求审查中识别的简单错误修复。他们还使用GitHub Actions让Claude自动处理拉取请求注释，如格式问题或函数重命名。</p>
+<p><strong>代码库探索</strong>
+在处理不熟悉的代码库（如monorepo或API端）时，团队使用Claude Code快速理解系统工作原理。他们直接向Claude询问解释和代码引用，而不是等待Slack响应，在上下文切换中节省大量时间。</p>
+<h3 id="团队影响-1">团队影响</h3>
+<p><strong>更快的功能实现</strong>
+Claude Code成功实现了Vim模式等复杂功能，70%的代码由Claude自主编写。</p>
+<p><strong>提高开发速度</strong>
+该工具快速原型功能并迭代想法，而不会陷入实现细节。</p>
+<p><strong>通过自动化测试提高代码质量</strong>
+Claude生成综合测试并处理常规错误修复，在减少手动工作的同时保持高标准。</p>
+<p><strong>更好的代码库探索</strong>
+团队成员可以快速熟悉monorepo的不熟悉部分，而无需等待同事的回应。</p>
+<h3 id="claude-code团队的最佳建议">Claude Code团队的最佳建议</h3>
+<p><strong>创建自给自足的循环</strong>
+设置Claude通过自动运行构建、测试和检查来验证自己的工作。这允许Claude更长时间地自主工作并捕捉自己的错误，当你要求Claude在编写代码之前生成测试时特别有效。</p>
+<p><strong>发展任务分类直觉</strong>
+学会区分异步工作良好的任务（外围功能、原型制作）与需要同步监督的任务（核心业务逻辑、关键修复）。产品边缘的抽象任务可以用&quot;自动接受模式&quot;处理，而核心功能需要更密切的监督。</p>
+<p><strong>形成清晰、详细的提示</strong>
+当组件有相似名称或功能时，在请求中要极其具体。你的提示越好越详细，你就越能信任Claude独立工作而不会意外更改代码库的错误部分。</p>
+<h2 id="安全工程团队的claude-code使用">安全工程团队的Claude Code使用</h2>
+<p>安全工程团队专注于保护软件开发生命周期、供应链安全和开发环境安全。他们广泛使用Claude Code来编写和调试代码。</p>
+<h3 id="主要claude-code使用案例-2">主要Claude Code使用案例</h3>
+<p><strong>复杂基础设施调试</strong>
+在处理事件时，他们向Claude Code提供堆栈跟踪和文档，要求其跟踪代码库中的控制流。这显著减少了生产问题的解决时间，使他们能够理解通常需要10-15分钟手动代码扫描的问题，现在约5分钟即可完成。</p>
+<p><strong>Terraform代码审查和分析</strong>
+对于需要安全批准的基础设施更改，团队将Terraform计划复制到Claude Code中询问&quot;这会做什么？我会后悔吗？&ldquo;这创建了更紧密的反馈循环，使安全团队更容易快速审查和批准基础设施更改，减少开发过程中的瓶颈。</p>
+<p><strong>文档综合和运行手册</strong>
+Claude Code摄取多个文档源并创建markdown运行手册、故障排除指南和概述。团队使用这些简化的文档作为调试实际问题的上下文，创建比搜索完整知识库更高效的工作流程。</p>
+<p><strong>测试驱动开发工作流程</strong>
+不再是之前的&quot;设计文档 → 粗糙代码 → 重构 → 放弃测试&quot;模式，他们现在要求Claude Code提供伪代码，指导其进行测试驱动开发，并定期检查以在卡住时进行引导，产生更可靠和可测试的代码。</p>
+<p><strong>上下文切换和项目入职</strong>
+在为现有项目（如&quot;dependant&rdquo;—一个安全批准工作流程的web应用程序）做贡献时，他们使用Claude Code编写、审查和执行存储在代码库中的markdown规范，使他们能够在几天内而不是几周内做出有意义的贡献。</p>
+<h3 id="团队影响-2">团队影响</h3>
+<p><strong>减少事件解决时间</strong>
+通常需要10-15分钟手动代码扫描的基础设施调试现在大约需要5分钟。</p>
+<p><strong>改善安全审查周期</strong>
+Terraform代码的安全批准审查速度大大加快，消除了开发人员等待安全团队批准时的阻塞。</p>
+<p><strong>增强跨功能贡献</strong>
+团队成员可以在几天内而不是几周的上下文构建后对项目做出有意义的贡献。</p>
+<p><strong>更好的文档工作流程</strong>
+从多个源综合的故障排除指南和运行手册创建更高效的调试过程。</p>
+<h3 id="安全工程团队的最佳建议">安全工程团队的最佳建议</h3>
+<p><strong>广泛使用自定义斜杠命令</strong>
+安全工程使用整个monorepo中50%的所有自定义斜杠命令实现。这些自定义命令简化特定工作流程并加速重复任务。</p>
+<p><strong>让Claude先说话</strong>
+不再询问目标问题来生成代码片段，他们现在告诉Claude Code&quot;在进行时提交你的工作&quot;并让它自主工作，定期检查，产生更全面的解决方案。</p>
+<p><strong>利用它进行文档编制</strong>
+除了编码，Claude Code在综合文档和创建结构化输出方面表现出色。团队提供写作样本和格式偏好，以获得他们可以立即在Slack、Google Docs和其他工具中使用的文档，避免界面切换疲劳。</p>
+<h2 id="推理团队的claude-code使用">推理团队的Claude Code使用</h2>
+<p>推理团队管理在Claude读取你的提示并生成响应时存储信息的内存系统。团队成员，特别是那些新接触机器学习的成员，可以广泛使用Claude Code来弥补知识差距并加速他们的工作。</p>
+<h3 id="主要claude-code使用案例-3">主要Claude Code使用案例</h3>
+<p><strong>代码库理解和入职</strong>
+团队严重依赖Claude Code在加入复杂代码库时快速理解架构。他们不再手动搜索GitHub存储库，而是询问Claude找到调用特定功能的文件，在几秒钟内获得结果，而不是询问同事或手动搜索。</p>
+<p><strong>具有边缘情况覆盖的单元测试生成</strong>
+在编写核心功能后，他们要求Claude编写综合单元测试。Claude自动包含遗漏的边缘情况，在几分钟内完成通常需要大量时间和精神能量的工作，就像一个他们可以审查的编码助手。</p>
+<p><strong>机器学习概念解释</strong>
+没有机器学习背景的团队成员依赖Claude来解释模型特定的函数和设置。原本需要一小时Google搜索和阅读文档的工作现在需要10-20分钟，研究时间减少了80%。</p>
+<p><strong>跨语言代码转换</strong>
+在不同编程语言中测试功能时，团队解释他们想要测试的内容，Claude用所需的语言（如Rust）编写逻辑，消除了仅为测试目的学习新语言的需要。</p>
+<p><strong>命令回忆和Kubernetes管理</strong>
+他们不再记住复杂的Kubernetes命令，而是询问Claude正确的语法，如&quot;如何获取所有pod或部署状态&quot;，并接收基础设施工作所需的确切命令。</p>
+<h3 id="团队影响-3">团队影响</h3>
+<p><strong>加速ML概念学习</strong>
+使用Claude Code，他们的研究时间减少了80%，历史上需要一小时Google搜索的工作现在需要10-20分钟。</p>
+<p><strong>更快的代码库导航</strong>
+该工具可以帮助团队成员在几秒钟内找到相关文件并理解系统架构，而不是依赖同事分享知识，通常需要几天时间。</p>
+<p><strong>全面的测试覆盖</strong>
+Claude自动生成带有边缘情况的单元测试，减轻精神负担同时保持代码质量。</p>
+<p><strong>消除语言障碍</strong>
+团队可以在不熟悉的语言（如Rust）中实现功能而无需学习它。</p>
+<h3 id="推理团队的最佳建议">推理团队的最佳建议</h3>
+<p><strong>首先测试知识库功能</strong>
+尝试问各种问题，看Claude是否比Google搜索回答得更快。如果更快更准确，那它就是你工作流程中有价值的时间节省工具。</p>
+<p><strong>从代码生成开始</strong>
+给Claude具体说明并要求它编写逻辑，然后验证正确性。这有助于在使用它处理更复杂任务之前建立对该工具能力的信任。</p>
+<p><strong>使用它进行测试编写</strong>
+让Claude编写单元测试可以显著减轻日常开发工作的压力。使用此功能在不花费时间思考所有测试用例的情况下保持代码质量。</p>
+<h2 id="数据科学和ml工程团队的claude-code使用">数据科学和ML工程团队的Claude Code使用</h2>
+<p>数据科学和ML工程团队需要复杂的可视化工具来理解模型性能，但构建这些工具通常需要不熟悉语言和框架的专业知识。Claude Code使这些团队能够构建生产质量的分析控制面板而无需成为全栈开发人员。</p>
+<h3 id="主要claude-code使用案例-4">主要Claude Code使用案例</h3>
+<p><strong>构建JavaScript/TypeScript控制面板应用</strong>
+尽管&quot;对JavaScript和TypeScript知之甚少&quot;，团队使用Claude Code构建完整的React应用程序来可视化强化学习（RL）模型性能和训练数据。他们给Claude控制权从头开始编写完整应用程序，如一个5,000行的TypeScript应用，而无需理解代码本身。这很关键，因为可视化应用程序相对低上下文且不需要理解整个monorepo，允许快速原型工具在训练和评估期间理解模型性能。</p>
+<p><strong>处理重复的重构任务</strong>
+面对合并冲突或半复杂的文件重构（对编辑器宏来说太复杂但对主要开发工作来说不够大）时，他们将Claude Code用作&quot;老虎机&quot; - 提交状态，让Claude自主工作30分钟，然后要么接受解决方案，要么如果不起作用就重新开始。</p>
+<p><strong>创建持久分析工具而不是一次性笔记本</strong>
+团队现在让Claude构建可在未来模型评估中重复使用的永久React控制面板，而不是构建会被丢弃的一次性Jupyter笔记本。这很重要，因为理解Claude的性能是&quot;团队最重要的事情之一&quot; - 他们需要理解模型在训练和评估期间的表现，这&quot;实际上并非易事，简单工具无法从查看单一数字上升中获得太多信号&quot;。</p>
+<p><strong>零依赖任务委托</strong>
+对于完全不熟悉的代码库或语言中的任务，他们将整个实现委托给Claude Code，利用其从monorepo收集上下文并在不涉及他们实际编码过程的情况下执行任务的能力。这允许在他们专业知识之外的领域保持生产力，而不是花时间学习新技术。</p>
+<h3 id="团队影响-4">团队影响</h3>
+<p><strong>实现2-4倍时间节省</strong>
+手动完成繁琐但可管理的常规重构任务现在完成得更快。</p>
+<p><strong>在不熟悉语言中构建复杂应用程序</strong>
+尽管JavaScript/TypeScript经验很少，但创建了5,000行TypeScript应用程序。</p>
+<p><strong>从一次性转向持久工具</strong>
+不再是可丢弃的Jupyter笔记本，现在为模型分析构建可重复使用的React控制面板。</p>
+<p><strong>直接模型改进见解</strong>
+第一手Claude Code体验为未来模型迭代的更好内存系统和UX改进开发提供信息。</p>
+<p><strong>实现可视化驱动决策</strong>
+通过高级数据可视化工具更好地理解Claude在训练和评估期间的性能。</p>
+<h3 id="数据科学和ml工程团队的最佳建议">数据科学和ML工程团队的最佳建议</h3>
+<p><strong>像老虎机一样对待它</strong>
+让Claude工作之前保存你的状态，让它运行30分钟，然后要么接受结果，要么重新开始，而不是试图纠正。重新开始通常比试图修复Claude的错误有更高的成功率。</p>
+<p><strong>在需要时中断要求简单性</strong>
+在监督时，不要犹豫停止Claude并问&quot;你为什么这样做？试试更简单的东西。&ldquo;模型默认倾向于更复杂的解决方案，但对简单方法的请求响应良好。</p>
+<h2 id="产品工程团队的claude-code使用">产品工程团队的Claude Code使用</h2>
+<p>产品工程团队致力于PDF支持、引用和网络搜索等功能，将额外知识引入Claude的上下文窗口。在大型复杂代码库中工作意味着不断遇到不熟悉的代码部分，花费大量时间理解为任何给定任务检查哪些文件，并在进行更改之前构建上下文。Claude Code通过作为指导来改善这种体验，帮助他们理解系统架构、识别相关文件并解释复杂交互。</p>
+<h3 id="主要claude-code使用案例-5">主要Claude Code使用案例</h3>
+<p><strong>第一步工作流程规划</strong>
+团队使用Claude Code作为任何任务的&quot;第一站&rdquo;，要求它识别为错误修复、功能开发或分析检查哪些文件。这替代了传统的耗时过程——手动导航代码库并在开始工作之前收集上下文。</p>
+<p><strong>跨代码库的独立调试</strong>
+团队现在有信心处理代码库不熟悉部分的错误，而不是向其他人寻求帮助。他们可以问Claude&quot;你认为你能修复这个错误吗？这是我看到的行为&quot;并经常获得立即进展，考虑到所需的时间投资，这在以前是不可行的。</p>
+<p><strong>通过狗食测试模型迭代</strong>
+Claude Code自动使用最新的研究模型快照，使其成为他们体验模型变化的主要方式。这给团队在开发周期中直接反馈模型行为变化，这是他们在之前发布期间没有经历过的。</p>
+<p><strong>消除上下文切换开销</strong>
+他们可以直接在Claude Code中提问而无需额外的上下文收集，而不是复制代码片段并将文件拖入Claude.ai同时广泛解释问题，显著减少精神开销。</p>
+<h3 id="团队影响-5">团队影响</h3>
+<p><strong>增加处理不熟悉领域的信心</strong>
+团队成员可以独立调试错误并调查不熟悉代码库中的事件。</p>
+<p><strong>在上下文收集方面显著节省时间</strong>
+Claude Code消除了复制代码片段并将文件拖入Claude.ai的开销，减少精神上下文切换负担。</p>
+<p><strong>更快的轮换入职</strong>
+轮换到新团队的工程师可以快速导航不熟悉的代码库并做出有意义的贡献，而无需广泛的同事咨询。</p>
+<p><strong>增强开发人员幸福感</strong>
+团队报告在日常工作流程中摩擦减少后感到更快乐、更有生产力。</p>
+<h3 id="产品工程团队的最佳建议">产品工程团队的最佳建议</h3>
+<p><strong>将其视为迭代伙伴，而不是一次性解决方案</strong>
+不要期望Claude立即解决问题，而是将其作为你迭代的合作者。这比试图在第一次尝试时获得完美解决方案效果更好。</p>
+<p><strong>用它在不熟悉领域建立信心</strong>
+不要犹豫处理你专业知识之外的错误或调查事件。Claude Code使得在通常需要广泛上下文构建的领域独立工作成为可能。</p>
+<p><strong>从最少信息开始</strong>
+从你需要的最少信息开始，让Claude指导你完成过程，而不是预先加载广泛的解释。</p>
+<h2 id="增长营销团队的claude-code使用">增长营销团队的Claude Code使用</h2>
+<p>增长营销团队专注于构建付费搜索、付费社交、移动应用商店、电子邮件营销和SEO等绩效营销渠道。作为一个人的非技术团队，他们使用Claude Code自动化重复营销任务并创建传统上需要大量工程资源的代理工作流程。</p>
+<h3 id="主要claude-code使用案例-6">主要Claude Code使用案例</h3>
+<p><strong>自动化Google Ads创意生成</strong>
+团队构建了一个代理工作流程，处理包含数百个现有广告及其性能指标的CSV文件，识别性能不佳的广告进行迭代，并生成满足严格字符限制（标题30字符，描述90字符）的新变体。使用两个专门的子代理（一个用于标题，一个用于描述），系统可以在几分钟内生成数百个新广告，而不是需要跨多个活动手动创建。这使他们能够大规模测试和迭代，这在以前需要大量时间才能实现。</p>
+<p><strong>用于大规模创意制作的Figma插件</strong>
+他们开发了一个Figma插件，识别框架并通过交换标题和描述程序化生成多达100个广告变体，而不是手动复制和编辑付费社交广告的静态图像，将需要数小时复制粘贴的工作减少到每批半秒。这实现了10倍的创意输出，使团队能够在关键社交渠道上测试更多创意变体。</p>
+<p><strong>用于活动分析的Meta Ads MCP服务器</strong>
+他们创建了一个与Meta Ads API集成的MCP服务器，直接在Claude桌面应用中查询活动性能、支出数据和广告效果，消除了为性能分析在平台之间切换的需要，节省了关键时间，每个效率提升都转化为更好的ROI。</p>
+<p><strong>具有内存系统的高级提示工程</strong>
+他们实现了一个基本内存系统，记录跨广告迭代的假设和实验，允许系统在生成新变体时将以前的测试结果拉入上下文，创建一个自我改进的测试框架。这实现了手动跟踪不可能的系统实验。</p>
+<h3 id="团队影响-6">团队影响</h3>
+<p><strong>重复任务的大幅时间节省</strong>
+Claude Code将广告文案创建时间从2小时减少到15分钟，释放团队时间进行更具战略性的工作。</p>
+<p><strong>创意输出增加10倍</strong>
+团队现在可以通过自动化广告生成和Figma集成在渠道上测试更多广告变体，以获取最新的视觉设计元素。</p>
+<p><strong>像更大团队一样运作</strong>
+团队可以处理传统上需要专门工程资源的大型开发任务。</p>
+<p><strong>战略焦点转移</strong>
+团队可以花更多时间在整体战略和构建代理自动化上，而不是手动执行。</p>
+<h3 id="增长营销团队的最佳建议">增长营销团队的最佳建议</h3>
+<p><strong>识别支持API的重复任务</strong>
+寻找涉及与具有API的工具（如广告平台、设计工具、分析平台）进行重复操作的工作流程。这些是自动化的主要候选者，也是Claude Code提供最大价值的地方。</p>
+<p><strong>将复杂工作流程分解为专门的子代理</strong>
+不要试图在一个提示或工作流程中处理所有内容，而是为特定任务创建单独的代理（如标题代理与描述代理）。这使调试更容易，并在处理复杂要求时提高输出质量。</p>
+<p><strong>在编码之前彻底头脑风暴和提示计划</strong>
+花大量时间预先使用Claude.ai思考整个工作流程，然后让Claude.ai为Claude Code创建一个全面的提示和代码结构作为参考。此外，逐步工作而不是要求一次性解决方案，以避免Claude被复杂任务压垮。</p>
+<h2 id="产品设计团队的claude-code使用">产品设计团队的Claude Code使用</h2>
+<p>产品设计团队支持Claude Code、Claude.ai和Anthropic API，专注于构建AI产品。即使非开发人员也可以使用Claude Code弥合设计和工程之间的传统差距，直接实现他们的设计愿景，而无需与工程师进行大量来回迭代。</p>
+<h3 id="主要claude-code使用案例-7">主要Claude Code使用案例</h3>
+<p><strong>前端完善和状态管理更改</strong>
+团队直接使用Claude Code实现这些更改，而不是为视觉调整（字体、颜色、间距）</p>
+<p><a href="https://www.anthropic.com/news/how-anthropic-teams-use-claude-code" target="_blank" rel="noopener noreffer ">引用原文</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-08-11</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/claude/">Claude</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">gexago</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
